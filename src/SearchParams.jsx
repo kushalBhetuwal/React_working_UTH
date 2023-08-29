@@ -1,17 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Pet from "./Pet";
 const animals = ["bird", "cat", "reptile", "mammal"];
 const breeds = ["kushal"];
 
-
 const SearchParams = () => {
-  const [location, setLocation] = useState("Seattle, WA");
+  const [location, setLocation] = useState("");
   const [animal, setAnimal] = useState("");
   const [breed, setBreed] = useState("");
-
+  const [pets, setPets] = useState([]);
+  useEffect(() => {
+    requestPets();
+    
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  async function requestPets() {
+    const response = await fetch(
+      `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
+    );
+    const json = await response.json();
+    setPets(json.pets);
+  }
   return (
     <div className="search-params">
-      <form>
-
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          requestPets();
+        }}
+      >
         <label htmlFor="location">
           Location
           <input
@@ -25,13 +40,15 @@ const SearchParams = () => {
           Animal
           <select
             id="animal"
-            disabled={animals.length===0}
+            disabled={animals.length === 0}
             value={animal}
-            onChange={(e) => {setAnimal(e.target.value)
-            setBreed("");
+            onChange={(e) => {
+              setAnimal(e.target.value);
+              setBreed("");
             }}
-            onBlur={(e)=>{setAnimal(e.target.value)
-            setBreed("");
+            onBlur={(e) => {
+              setAnimal(e.target.value);
+              setBreed("");
             }}
           >
             <option />
@@ -44,9 +61,9 @@ const SearchParams = () => {
           Breed
           <select
             id="breed"
-            disabled ={breeds.length===0}
+            disabled={breeds.length === 0}
             onChange={(e) => setBreed(e.target.value)}
-            onBlur={(e)=>setBreed(e.target.value)}
+            onBlur={(e) => setBreed(e.target.value)}
             value={breed}
             placeholder="Breed"
           >
@@ -58,6 +75,14 @@ const SearchParams = () => {
         </label>
         <button>Submit</button>
       </form>
+      {pets.map((pet) => (
+        <Pet
+          name={pet.name}
+          animal={pet.animal}
+          breed={pet.breed}
+          key={pet.id}
+        />
+      ))}
     </div>
   );
 };
