@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import Result from "./Result";
-import useBreedList from "./useBreedList";
+import Pet from "./Pet";
+import useBreedList from './useBreedList';
 const Animals = ["bird", "cat", "dog", "rabbit", "reptile"];
 const SearchParams = () => {
   const [location, setLocation] = useState(""); //this line always gives an array
@@ -14,6 +14,7 @@ const SearchParams = () => {
   //const setLocation = locationhook[1];
 
   //useEffect happens outside of the component
+  
 
   useEffect(() => {
     requestPets();
@@ -32,7 +33,7 @@ const SearchParams = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          requestPets();
+          requestPets(); 
         }}
       >
         <label htmlFor="search">Search</label>
@@ -71,7 +72,14 @@ const SearchParams = () => {
 
         <button>Submit</button>
       </form>
-      <Result pets={pets} />
+      {pets.map((pet) => (
+        <Pet
+          name={pet.name}
+          animal={pet.animal}
+          breed={pet.breed}
+          key={pet.id}
+        />
+      ))}
     </div>
   );
 };
