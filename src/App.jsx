@@ -1,18 +1,25 @@
-import React from 'react';
-import {createRoot} from 'react-dom/client';
-import SearchParams from './SearchParams';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import SearchParams from "./SearchParams";
+import Details from "./Details";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 
-const App =()=>{
-  return(
+const App = () => {
+  return (
+    <BrowserRouter>
     <div>
-    <h1>Adopt Me!</h1>
-   <SearchParams/>
-    </div>
-  )
-}
+      <header>
+        <Link to ="/"><h1>Adopt me!</h1></Link>
+      </header>
+        <Routes>
+        <Route path ="/details/:id" element ={<Details/>}/>
+        <Route path = "/" element = {<SearchParams/>}/>
+        </Routes>
+      </div>
+    </BrowserRouter>
+  );
+};
 
-const container = document.getElementById('root');
-const root = createRoot(container);
-root.render(<App/>)
+createRoot(document.getElementById('root')).render(<App/>);
 
 export default App;
