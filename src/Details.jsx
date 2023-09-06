@@ -7,7 +7,7 @@ const Details = () => {
 
   if (results.isLoading) {
     return (
-      <div className="laoding-pane">
+      <div className="loading-pane">
         <h2 className="loader">🌀</h2>
       </div>
     );
