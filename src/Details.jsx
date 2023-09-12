@@ -3,7 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import FetchPet from "./fetchPet";
 import Carousel from "./Carousel";
 import ErrorBoundary from "../ErrorBoundary";
+import Modal from "./Modal";
+import { useState } from "react";
 const Details = () => {
+  const [showModal, setShowModal] = useState(false);
   const { id } = useParams();
   const results = useQuery(["details", id], FetchPet);
 
@@ -15,26 +18,36 @@ const Details = () => {
     );
   }
   const pet = results.data.pets[0];
-  console.log(pet);
   return (
     <div className="details">
       <div>
-      <Carousel images={pet.images}/>
+        <Carousel images={pet.images} />
         <h1>{pet.name}</h1>
         <h2>
           {pet.animal}—{pet.breed}—{pet.city}, {pet.state}
         </h2>
-        <button>Adopt {pet.name}</button>
+        <button onClick ={()=>setShowModal(true)}>Adopt {pet.name}</button>
         <p>{pet.description}</p>
       </div>
+      {showModal ? (
+        <Modal>
+          <div>
+          <h1>Would you like to adopt {pet.name}</h1>
+            <div className="buttons">
+              <button>Yes</button>
+              <button onClick={() => setShowModal(false)}>No</button>
+            </div>
+          </div>
+        </Modal>
+      ) : null}
     </div>
   );
 };
 
-export default function DetailsErrorBoundary(props){
-  return(
+export default function DetailsErrorBoundary(props) {
+  return (
     <ErrorBoundary>
-      <Details {...props}/>
+      <Details {...props} />
     </ErrorBoundary>
-  )
+  );
 }
