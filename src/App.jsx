@@ -24,7 +24,7 @@ const App = () => {
           <div>
             <header>
               <Link to="/">
-                <h1>Adopt me!</h1>
+                <h1> Kushal Pets</h1>
               </Link>
             </header>
             <Routes>
